@@ -85,9 +85,21 @@ class MyHomePage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(10.0),
               child: Column(
-                children: const [
-                  TextField(),
-                  TextField(),
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const TextField(
+                    decoration: InputDecoration(labelText: "title"),
+                  ),
+                  const TextField(
+                    decoration: InputDecoration(labelText: "Amount"),
+                  ),
+                  TextButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(Colors.purple),
+                    ),
+                    onPressed: null,
+                    child: const Text('Add transaction'),
+                  )
 
                 ],
               ),
