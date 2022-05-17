@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '/transaction.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -6,10 +7,6 @@ class MyHomePage extends StatelessWidget {
     Transaction(
         id: 't1', title: 'new shoes', amount: 999, date: DateTime.now()),
     Transaction(id: 't2', title: 'new jean', amount: 89, date: DateTime.now()),
-    Transaction(
-        id: 't3', title: 'new grocery', amount: 345, date: DateTime.now()),
-    Transaction(
-        id: 't4', title: 'new jacket', amount: 454, date: DateTime.now())
   ];
 
   // MyHomePage({Key? key}) : super(key: key);
@@ -50,7 +47,7 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            tx.date.toString(),
+                            DateFormat.yMMMd().format(tx.date),
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
@@ -74,9 +71,27 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Expense Planner'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Card(
-            child: Text("chart"),
+          Container(
+            width: double.infinity,
+            child: const Card(
+              child: Text("chart"),
+              elevation: 5.0,
+            ),
+          ),
+          Card(
+            elevation: 5,
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: const [
+                  TextField(),
+                  TextField(),
+
+                ],
+              ),
+            ),
           ),
           Column(
             children: getList(),
