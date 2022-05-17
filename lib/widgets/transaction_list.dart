@@ -62,8 +62,11 @@ class TransactionList extends StatelessWidget {
           .toList();
       return childs;
     }
-    return Column(
-      children: getList(),
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: getList(),
+      ),
     );
   }
 }
