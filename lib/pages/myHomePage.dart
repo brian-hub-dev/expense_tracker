@@ -12,9 +12,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-        id: 't1', title: 'new shoes', amount: 999, date: DateTime.now()),
-    Transaction(id: 't2', title: 'new jean', amount: 89, date: DateTime.now()),
+    // Transaction(
+    //     id: 't1', title: 'new shoes', amount: 999, date: DateTime.now()),
+    // Transaction(id: 't2', title: 'new jean', amount: 89, date: DateTime.now()),
   ];
 
   void _addNewTransaction(String txTitle, double txAmount) {
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Expense Planner'),
+        title: const Text('Personal Expenses'),
         actions: [
           IconButton(
             onPressed: () => _startAddNewTransaction(context),
