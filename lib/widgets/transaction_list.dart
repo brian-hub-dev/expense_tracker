@@ -4,129 +4,81 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function deleteTx;
 
-  const TransactionList({Key? key, required this.transactions})
+  const TransactionList(
+      {Key? key, required this.transactions, required this.deleteTx})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // List<Widget> getList() {
-    //   List<Widget> childs = transactions
-    //       .map(
-    //         (tx) => Row(
-    //           children: <Widget>[
-    //             Card(
-    //               child: Row(
-    //                 children: [
-    //                   Container(
-    //                     margin: const EdgeInsets.symmetric(
-    //                         horizontal: 15.0, vertical: 10.0),
-    //                     padding: const EdgeInsets.all(10.0),
-    //                     decoration: BoxDecoration(
-    //                       border: Border.all(color: Colors.purple, width: 2),
-    //                     ),
-    //                     child: Text(
-    //                       'Ksh ${tx.amount.toString()}',
-    //                       style: const TextStyle(
-    //                           fontWeight: FontWeight.bold,
-    //                           fontSize: 20,
-    //                           color: Colors.purple),
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.start,
-    //                     children: [
-    //                       Text(
-    //                         tx.title,
-    //                         style: const TextStyle(
-    //                           fontSize: 16.0,
-    //                           fontWeight: FontWeight.bold,
-    //                         ),
-    //                       ),
-    //                       Text(
-    //                         DateFormat.yMMMd().format(tx.date),
-    //                         style: const TextStyle(
-    //                           color: Colors.grey,
-    //                         ),
-    //                       )
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //             // Text("${e.height}", style: const TextStyle(fontSize: 25)),
-    //             // Text("${e.date}", style: const TextStyle(fontSize: 25))
-    //           ],
-    //         ),
-    //       )
-    //       .toList();
-    //   return childs;
-    // }
-
-    return Container(
-      height: 500.0,
-      child: transactions.isEmpty
-          ? Column(
+    final mediaQuery = MediaQuery.of(context);
+    return transactions.isEmpty
+        ? LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+            return Column(
               children: [
                 Text(
                   'No transaction added yet',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 15,),
+                const SizedBox(
+                  height: 15,
+                ),
                 SizedBox(
-                    height: 200,
-                    child: Image.asset(
-                      'assets/images/waiting.png',
-                      fit: BoxFit.cover,
-                    ))
-              ],
-            )
-          : ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 10.0),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2),
-                        ),
-                        child: Text(
-                          'Ksh ${transactions[index].amount.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            transactions[index].title,
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                          Text(
-                            DateFormat.yMMMd().format(transactions[index].date),
-                            style: const TextStyle(
-                              color: Colors.grey,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+                  height: constraints.maxHeight * 0.6,
+                  child: Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
                   ),
-                );
-              },
-              // child: Column(
-              //   children: getList(),
-              // ),
-            ),
-    );
+                ),
+              ],
+            );
+          })
+        : ListView.builder(
+            itemCount: transactions.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                elevation: 5,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: FittedBox(
+                          child: Text(
+                              'Ksh ${transactions[index].amount.toStringAsFixed(2)}')),
+                    ),
+                  ),
+                  title: Text(
+                    transactions[index].title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  subtitle: Text(
+                    DateFormat.yMMMd().format(transactions[index].date),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  trailing: mediaQuery.size.width > 460
+                      ? ElevatedButton.icon(
+                          onPressed: () => deleteTx(transactions[index].id),
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          label: const Text("Delete"))
+                      : IconButton(
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          onPressed: () => deleteTx(transactions[index].id),
+                        ),
+                ),
+              );
+            },
+          );
   }
 }
